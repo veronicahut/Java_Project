@@ -1,0 +1,374 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ * author: Veronica Hutchins
+ * date: 11/10/2023 
+ * notes: CITP 190 project 5
+ * 
+ */
+package CourseApp;
+//import java.util.*;
+
+/**
+ * base class
+ implements iComparable interface method
+ * @author Veron
+ */
+public abstract class Person implements Comparable<Person> {
+    
+    //members
+    private String personId;
+    private String lastName;
+    private String firstName;
+    
+    //methods
+    public void setPersonId(String personId){
+        this.personId = personId;
+    }
+    
+    public String getPersonId(){
+        return this.personId;
+    }
+    
+    public void setLastName(String lastName){
+        this.lastName = lastName;
+    }
+    
+    public String getLastName(){
+        return this.lastName;
+    }
+    
+    public void setFirstName(String firstName){
+        this.firstName = firstName;
+    }
+    
+    public String getFirstName(){
+        return this.firstName;
+    }
+    
+    @Override
+    public String toString(){
+        return this.personId + "\t" + this.lastName + "\t" + this.firstName;
+    }
+    
+    @Override
+    public int compareTo(Person person){
+        
+        //compare alphabetically
+        int i;
+        //compare last names; if last names are the same, compare first names
+        if(person.getLastName().equalsIgnoreCase(this.lastName)){
+            i = this.firstName.compareToIgnoreCase(person.getFirstName());
+        } else{
+            i = this.lastName.compareToIgnoreCase(person.getLastName());
+        }
+        
+        return i;
+    }
+    
+}
+
+
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ * author: Veronica Hutchins
+ * date: 11/10/2023 
+ * notes: CITP 190 project 5 
+ * 
+ */
+package CourseApp;
+
+/**
+ * sub class of Person
+ * @author Veron
+ */
+public class Student extends Person {
+    
+    //members
+    private String major;
+    private double gpa;
+    
+    //methods
+    public void setMajor(String major){
+        this.major = major;
+    }
+    
+    public String getMajor(){
+        return this.major;
+    }
+    
+    public void setGpa(double gpa){
+        this.gpa = gpa;
+    }
+    
+    public double getGpa(){
+        return this.gpa;
+    }
+    
+    @Override
+    public String toString(){
+        return super.toString() + "\t" + this.major + "\t" + this.gpa;
+    }
+}
+
+
+
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ * author: Veronica Hutchins
+ * date: 11/10/2023 
+ * notes: CITP 190 project 5 
+ * 
+ */
+package CourseApp;
+
+/**
+ * sub class of Person
+ * @author Veron
+ */
+public class Instructor extends Person {
+    
+    //members
+    private String title;
+    private String department;
+    
+    //methods
+    public void setTitle(String title){
+        this.title = title;
+    }
+    
+    public String getTitle(){
+        return this.title;
+    }
+    
+    public void setDepartment(String department){
+        this.department = department;
+    }
+    
+    public String getDepartment(){
+        return this.department;
+    }
+    
+    @Override
+    public String toString(){
+        return super.toString() + "\t" + this.title + "\t" + this.department;
+    }
+}
+
+
+
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ * author: Veronica Hutchins
+ * date: 11/10/2023 
+ * notes: CITP 190 project 5 
+ * 
+ */
+package CourseApp;
+import java.util.*;
+
+/**
+ * class with a "has-a" relationship with Student and Instructor classes
+ * @author Veron
+ */
+public class Course {
+    
+    private String courseId;
+    private String courseName;
+    private String courseCode;
+    private Instructor instructor;
+    private ArrayList<Student> roster = new ArrayList<>();
+    
+    public void setCourseId(String courseId){
+        this.courseId = courseId;
+    }
+    
+    public String getCourseId(){
+        return this.courseId;
+    }
+    
+    public void setCourseName(String courseName){
+        this.courseName = courseName;
+    }
+    
+    public String getCourseName(){
+        return this.courseName;
+    }
+    
+    public void setCourseCode(String courseCode){
+        this.courseCode = courseCode;
+    }
+    
+    public String getCourseCode(){
+        return this.courseCode;
+    }
+    
+    public void setInstructor(Instructor instructor){
+        this.instructor = instructor;
+    }
+    
+    public Instructor getInstructor(){
+        return this.instructor;
+    }
+    
+    public void setRoster(ArrayList<Student> roster){
+        this.roster = roster;
+    }
+    
+    public ArrayList<Student> getRoster(){
+        return this.roster;
+    }
+    
+    public void addStudent(Student student){
+        //add
+        this.roster.add(student);
+    }
+    
+    public void removeStudent(String personId){
+        //remove
+        for(Student s : roster){
+            if(s.getPersonId().equals(personId)){
+                this.roster.remove(s);
+            }
+        }
+    }
+    
+    @Override
+    public String toString(){
+        String format;
+        String students;        
+
+        Collections.sort(this.roster);
+        
+        //printing
+        format = "Course ID: " + this.courseId + "\n" + 
+                "Course Name: " + this.courseName + "\n" + 
+                "Course Code: " + this.courseCode + "\n" + 
+                "\n" + 
+                "instructor" + "\n" + 
+                "---------------------" + "\n" + 
+                this.instructor.toString() + "\n" + 
+                "\n" + 
+                "Student Roster" + "\n" + 
+                "---------------------" + "\n";
+        
+        students = "";
+        for(Student s : this.roster){
+            students += s.toString();
+            students = students + "\n";
+        }
+        
+        return format + students;
+    }
+    
+}
+
+
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ * author: Veronica Hutchins
+ * date: 11/10/2023 
+ * notes: CITP 190 project 5 
+ *
+ */
+package CourseApp;
+//import java.util.*;
+
+/**
+ *
+ * @author Veron
+ */
+public class CourseApp {
+    
+    //private static final Scanner INPUT = new Scanner(System.in);
+    //private static ArrayList<Course> myCourse = new ArrayList<>();
+    
+    public static void main(String[] args) {
+    
+        //Scanner input = new Scanner(System.in);
+        //String userChoice;
+        
+        //add students
+        Student s1 = new Student();
+        s1.setPersonId("X00000001");
+        s1.setFirstName("Steve");
+        s1.setLastName("Smith");
+        s1.setMajor("Computer Science");
+        s1.setGpa(3.49);
+        Student s2 = new Student();
+        s2.setPersonId("X00000002");
+        s2.setFirstName("Sally");
+        s2.setLastName("Smith");
+        s2.setMajor("History\t\t");
+        s2.setGpa(2.98);
+        Student s3 = new Student();
+        s3.setPersonId("X00000003");
+        s3.setFirstName("Amanda");
+        s3.setLastName("Adams");
+        s3.setMajor("Civil Engineering");
+        s3.setGpa(3.7);
+        Student s4 = new Student();
+        s4.setPersonId("X00000004");
+        s4.setFirstName("Timothy");
+        s4.setLastName("Turner");
+        s4.setMajor("Biology\t\t");
+        s4.setGpa(2.51);
+        Student s5 = new Student();
+        s5.setPersonId("X00000005");
+        s5.setFirstName("Thomas");
+        s5.setLastName("Turner");
+        s5.setMajor("Nursing\t\t");
+        s5.setGpa(2.34);
+        //add instructors
+        Instructor i1 = new Instructor();
+        i1.setPersonId("X00009876");
+        i1.setFirstName("Jane");
+        i1.setLastName("Jones");
+        i1.setTitle("Associate Professor");
+        i1.setDepartment("Mathematics");
+        Instructor i2 = new Instructor();
+        i2.setPersonId("X00436754");
+        i2.setFirstName("Wilson");
+        i2.setLastName("Walton");
+        i2.setTitle("Lab Instructor");
+        i2.setDepartment("Biology");
+        //add courses with instructors and students
+        Course c1 = new Course();
+        c1.setCourseId("10000");
+        c1.setCourseCode("MATH 101");
+        c1.setCourseName("College Algebra");
+        c1.setInstructor(i1);
+        c1.addStudent(s2);
+        c1.addStudent(s3);
+        c1.addStudent(s5);        
+        Course c2 = new Course();
+        c2.setCourseId("21567");
+        c2.setCourseCode("MATH 111");
+        c2.setCourseName("Pre-Calculus");
+        c2.setInstructor(i1);
+        c2.addStudent(s1);
+        c2.addStudent(s4);        
+        Course c3 = new Course();
+        c3.setCourseId("69843");
+        c3.setCourseCode("BIOL 103");
+        c3.setCourseName("Biology I Lab");
+        c3.setInstructor(i2);
+        c3.addStudent(s1);
+        c3.addStudent(s2);
+        c3.addStudent(s3);
+        c3.addStudent(s4);
+        c3.addStudent(s5);
+
+        System.out.println(c1);
+        System.out.println();
+        System.out.println(c2);
+        System.out.println();
+        System.out.println(c3);
+        
+    }
+    
+}
